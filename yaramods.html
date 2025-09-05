@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YARAM-MODS- Main Login</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      background: #000;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+
+    .container {
+      max-width: 450px;
+      width: 90%;
+      margin: 20px;
+      padding: 30px 25px;
+      text-align: center;
+      animation: fadeInContainer 0.5s ease-out;
+    }
+
+    @keyframes fadeInContainer { from { opacity: 0; } to { opacity: 1; } }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 60px;
+      color: #FFFFFF; 
+      text-shadow: 0 0 15px #00ffe7, 0 0 25px #00ffe7, 0 0 35px #00ffe7;
+      margin-bottom: 10px;
+      line-height: 1.2;
+      position: relative;
+      animation: glitch 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #ccc;
+      margin-bottom: 25px;
+      font-weight: bold;
+    }
+    
+    /* --- Glitch Animation Styles --- */
+    h1::before, h1::after { content: 'YARAM\AMODS'; white-space: pre; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+    h1::before { left: 2px; text-shadow: -2px 0 #ff00c1; animation: glitch-before 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; }
+    h1::after { left: -2px; text-shadow: -2px 0 #00ffe7, 2px 2px #ff00c1; animation: glitch-after 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; }
+    @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(-5px, -5px); } 60% { transform: translate(5px, 5px); } 80% { transform: translate(5px, -5px); } 100% { transform: translate(0); } }
+    @keyframes glitch-before { 0% { clip-path: inset(85% -6px 11% 0); } 20% { clip-path: inset(45% -6px 48% 0); } 40% { clip-path: inset(54% -6px 33% 0); } 60% { clip-path: inset(10% -6px 85% 0); } 80% { clip-path: inset(87% -6px 5% 0); } 100% { clip-path: inset(36% -6px 55% 0); } }
+    @keyframes glitch-after { 0% { clip-path: inset(92% 0 5% -5px); } 20% { clip-path: inset(23% 0 44% -5px); } 40% { clip-path: inset(18% 0 69% -5px); } 60% { clip-path: inset(89% 0 10% -5px); } 80% { clip-path: inset(48% 0 45% -5px); } 100% { clip-path: inset(79% 0 11% -5px); } }
+
+    /* --- NEW: Floating Animation --- */
+    @keyframes floatAnimation {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+      100% { transform: translateY(0); }
+    }
+
+    .input-field, .btn {
+      animation: floatAnimation 8s ease-in-out infinite;
+    }
+    .btn { animation-delay: 2s; /* Stagger the button animation */ }
+
+    .input-field {
+      width: 100%; padding: 14px 20px; margin-bottom: 15px; border-radius: 12px; font-size: 16px; color: #fff;
+      border: 2px solid #00ffe7; outline: none; transition: all 0.3s ease;
+      background: rgba(0, 41, 38, 0.25); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    }
+    .input-field::placeholder { color: #ccc; opacity: 0.7; }
+    .input-field:focus { box-shadow: 0 0 15px #00ffe7; animation: none; /* Pause float on focus */ }
+
+    .btn {
+      width: 100%; margin-top: 10px; padding: 14px 20px; color: #00ffe7; border: 2px solid #00ffe7; border-radius: 12px;
+      font-size: 17px; font-weight: bold; cursor: pointer; text-decoration: none; transition: all 0.3s ease;
+      background: rgba(0, 41, 38, 0.25); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    }
+    .btn:hover {
+      background: #00ffe7; color: #000; transform: scale(1.05); box-shadow: 0 0 25px #00ffe7; animation: none; /* Pause float on hover */
+    }
+
+    /* --- NEW: LOGIN MODAL STYLES --- */
+    .status-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 2000; display: none; justify-content: center; align-items: center;
+    }
+    .status-modal {
+      background: rgba(10, 25, 24, 0.8); border: 2px solid; border-radius: 18px;
+      box-shadow: 0 0 50px; padding: 40px; max-width: 450px; width: 90%; text-align: center;
+      transform: scale(0.7); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .status-overlay.visible .status-modal { transform: scale(1); opacity: 1; }
+    .status-modal.success { border-color: #00ffe7; box-shadow: 0 0 50px #00ffe7; }
+    .status-modal.error { border-color: #ff00c1; box-shadow: 0 0 50px #ff00c1; }
+    .status-modal #status-icon { font-size: 50px; margin-bottom: 20px; }
+    .status-modal h2 { font-size: 28px; margin-bottom: 10px; text-transform: uppercase; }
+    .status-modal p { font-size: 16px; color: #ccc; }
+    .status-modal.success #status-icon { color: #00ffe7; }
+    .status-modal.error #status-icon { color: #ff00c1; }
+
+    /* Shake animation for error modal */
+    .shake-animation { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake { 10%, 90% { transform: scale(1) translate3d(-1px, 0, 0); } 20%, 80% { transform: scale(1) translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: scale(1) translate3d(-4px, 0, 0); } 40%, 60% { transform: scale(1) translate3d(4px, 0, 0); } }
+  </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="container">
+  <h1>YARAM<br>MODS</h1>
+  <div class="subtitle">🔐 Secure Login</div>
+  <form id="loginForm">
+    <input type="text" id="username" class="input-field" placeholder="Username" required />
+    <input type="password" id="password" class="input-field" placeholder="Password" required />
+    <button type="submit" class="btn">Login</button>
+  </form>
+  <button onclick="window.location.href='idpass.html'" class="btn">GET USERNAME PASS</button>
+</div>
+
+<div id="status-overlay" class="status-overlay">
+  <div id="status-modal" class="status-modal">
+    <div id="status-icon"></div>
+    <h2 id="status-title"></h2>
+    <p id="status-message"></p>
+  </div>
+</div>
+
+<script>
+  // --- Background Animation Script ---
+  const canvas = document.getElementById("bg"); const ctx = canvas.getContext("2d"); canvas.height = window.innerHeight; canvas.width = window.innerWidth;
+  const matrix = "01"; const fontSize = 16; const columns = canvas.width / fontSize; const drops = Array.from({ length: columns }).fill(1);
+  function draw() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.07)"; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = "#00ffe7"; ctx.font = `${fontSize}px monospace`;
+    for (let i = 0; i < drops.length; i++) {
+      const text = matrix[Math.floor(Math.random() * matrix.length)]; ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) { drops[i] = 0; } drops[i]++;
+    }
+  }
+  setInterval(draw, 35);
+  window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+  // --- MODIFIED: Login Form Logic with Animated Modal ---
+  const form = document.getElementById('loginForm');
+  const statusOverlay = document.getElementById('status-overlay');
+  const statusModal = document.getElementById('status-modal');
+  const statusIcon = document.getElementById('status-icon');
+  const statusTitle = document.getElementById('status-title');
+  const statusMessage = document.getElementById('status-message');
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // Reset previous states
+    statusModal.classList.remove('success', 'error', 'shake-animation');
+
+    if (username === 'YARAM-MODS&& password === 'YARAM-HASSAN') {
+      // --- SUCCESS ---
+      statusIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+      statusTitle.textContent = 'Access Granted';
+      statusMessage.textContent = 'Welcome, YARAM-MODS. Initializing dashboard...';
+      statusModal.classList.add('success');
+      
+      statusOverlay.style.display = 'flex';
+      setTimeout(() => statusOverlay.classList.add('visible'), 10); // Trigger transition
+
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 2500); // Increased delay to show the cool modal
+
+    } else {
+      // --- ERROR ---
+      statusIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+      statusTitle.textContent = 'Access Denied';
+      statusMessage.textContent = 'Invalid credentials. System locked for 3 seconds.';
+      statusModal.classList.add('error', 'shake-animation');
+
+      statusOverlay.style.display = 'flex';
+      setTimeout(() => statusOverlay.classList.add('visible'), 10); // Trigger transition
+      
+      // Hide the modal after a few seconds
+      setTimeout(() => {
+        statusOverlay.classList.remove('visible');
+        setTimeout(() => statusOverlay.style.display = 'none', 300); // Wait for fade out
+      }, 3000);
+    }
+  });
+</script>
+
+</body>
+</html>

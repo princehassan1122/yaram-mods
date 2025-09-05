@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YARAM-MODS</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* --- Basic Setup --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      background: #000;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    /* --- Invisible Container --- */
+    .container {
+      max-width: 450px;
+      margin: 70px auto;
+      padding: 30px 25px;
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { transform: translateY(-40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* --- ENHANCED: Heading Styles with Heavy Animation --- */
+    .title-container {
+      position: relative;
+      margin-bottom: 20px;
+      perspective: 1000px;
+    }
+    
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 60px;
+      color: #FFFFFF;
+      text-shadow: 0 0 15px #00ffe7, 0 0 25px #00ffe7, 0 0 35px #00ffe7;
+      line-height: 1.2;
+      animation: titleAnimation 3s ease-in-out infinite;
+      transform-style: preserve-3d;
+    }
+
+    @keyframes titleAnimation {
+      0%, 100% {
+        transform: translateY(0) rotateX(0deg) scale(1);
+        text-shadow: 0 0 15px #00ffe7, 0 0 25px #00ffe7, 0 0 35px #00ffe7;
+      }
+      25% {
+        transform: translateY(-10px) rotateX(10deg) scale(1.05);
+        text-shadow: 0 0 20px #00ffe7, 0 0 30px #00ffe7, 0 0 40px #00ffe7, 0 0 50px #00ffe7;
+      }
+      50% {
+        transform: translateY(0) rotateX(0deg) scale(1);
+        text-shadow: 0 0 15px #00ffe7, 0 0 25px #00ffe7, 0 0 35px #00ffe7;
+      }
+      75% {
+        transform: translateY(10px) rotateX(-10deg) scale(1.05);
+        text-shadow: 0 0 20px #00ffe7, 0 0 30px #00ffe7, 0 0 40px #00ffe7, 0 0 50px #00ffe7;
+      }
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: #ccc;
+      margin-bottom: 25px;
+      animation: subtitlePulse 4s ease-in-out infinite;
+    }
+
+    @keyframes subtitlePulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    /* --- ENHANCED: Buttons with Floating Animation --- */
+    .buttons-container {
+      position: relative;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: 15px 0;
+      padding: 14px 20px;
+      color: #00ffe7;
+      border: 2px solid #00ffe7;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      background: rgba(0, 41, 38, 0.25); 
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      position: relative;
+      animation: floatAnimation 6s ease-in-out infinite;
+      transform: translateY(0);
+    }
+
+    /* Different floating animations for each button */
+    .btn:nth-child(1) { animation-delay: 0s; }
+    .btn:nth-child(2) { animation-delay: 0.5s; }
+    .btn:nth-child(3) { animation-delay: 1s; }
+    .btn:nth-child(4) { animation-delay: 1.5s; }
+    .btn:nth-child(5) { animation-delay: 2s; }
+    .btn:nth-child(6) { animation-delay: 2.5s; }
+    .btn:nth-child(7) { animation-delay: 3s; }
+    .btn:nth-child(8) { animation-delay: 3.5s; }
+    .btn:nth-child(9) { animation-delay: 4s; }
+    .btn:nth-child(10) { animation-delay: 4.5s; }
+
+    @keyframes floatAnimation {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+        box-shadow: 0 5px 15px rgba(0, 255, 231, 0.2);
+      }
+      25% {
+        transform: translateY(-5px) rotate(0.5deg);
+        box-shadow: 0 10px 20px rgba(0, 255, 231, 0.3);
+      }
+      50% {
+        transform: translateY(0) rotate(0deg);
+        box-shadow: 0 5px 15px rgba(0, 255, 231, 0.2);
+      }
+      75% {
+        transform: translateY(5px) rotate(-0.5deg);
+        box-shadow: 0 10px 20px rgba(0, 255, 231, 0.3);
+      }
+    }
+
+    .btn:hover {
+      background: #00ffe7;
+      color: #000;
+      transform: scale(1.05) !important;
+      box-shadow: 0 0 25px #00ffe7;
+      animation-play-state: paused;
+    }
+
+    .btn i {
+      margin-right: 10px;
+      font-size: 18px;
+    }
+    
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      margin-top: 25px;
+      animation: fadeInOut 3s ease-in-out infinite;
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    /* --- POPUP MODAL STYLES --- */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      z-index: 2000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.5s ease-out;
+    }
+    .popup-modal {
+      background: rgba(0, 41, 38, 0.8);
+      border: 2px solid #00ffe7;
+      border-radius: 18px;
+      box-shadow: 0 0 50px #00ffe7;
+      padding: 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      animation: popupScale 0.5s ease-out;
+    }
+    
+    @keyframes popupScale {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    .popup-modal h2 { 
+      color: #00ffe7; 
+      margin-bottom: 15px; 
+      animation: textGlow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes textGlow {
+      from { text-shadow: 0 0 10px #00ffe7, 0 0 20px #00ffe7; }
+      to { text-shadow: 0 0 15px #00ffe7, 0 0 30px #00ffe7, 0 0 40px #00ffe7; }
+    }
+    
+    .popup-modal p { color: #ccc; margin-bottom: 25px; }
+    .popup-modal .close-btn { background: #555; border-color: #555; color: #fff; }
+    .popup-modal .close-btn:hover { background: #777; }
+
+    /* --- FLOATING ICON STYLES with Enhanced Animation --- */
+    .floating-icon {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #25D366;
+      color: #fff;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      line-height: 60px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      animation: pulse 2s infinite, float 3s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+      70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .floating-icon:hover { 
+      transform: scale(1.1) rotate(10deg);
+      animation: none;
+    }
+    
+    /* Particles background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+    }
+    
+    .particle {
+      position: absolute;
+      background: rgba(0, 255, 231, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <div class="title-container">
+    <h1>YARAM<br>MODS</h1>
+  </div>
+  <div class="subtitle">WELCOME TO YARAM-MODS TOOLKIT</div>
+
+  <div class="buttons-container">
+    <a href="https://www.mediafire.com/file/gwge84zllqnn13w/Android_reset_.7z/file" class="btn"><i class="fas fa-id-card"></i>All data remove apk</a>
+    <a href="https://whatsapp.com/channel/0029VbAfHcDC1FuEJJ7N513X" class="btn"><i class="fas fa-globe"></i> Whatsapp Channel</a>
+    <a class='btn' href='/xyaram-yt'><i class="fas fa-lock"></i> YOUTUBE WATCHTIME</a>
+    <a class='btn' href='/xyaram-banned'><i class="fas fa-shipping-fast"></i> WHATSAPP BAN</a>
+    <a href="https://wa.me/9231685988909" class="btn"><i class="fas fa-phone"></i>OWNER NUMBER</a>
+    <a href="https://whatsapp.com/channel/0029VbAfHcDC1FuEJJ7N513X/134" class="btn"><i class="fas fa-globe"></i> WhatsApp fake number</a>
+    <a href="https://www.mediafire.com/file/rt97ura25ft52l9/WA_UNBAN_APK_PRO_6.12.apk/file" class="btn"><i class="fas fa-mobile-alt"></i>WA UNBAN APK</a>
+    <a href="https://www.mediafire.com/file/ptx6z1rm78kz704/Deviant'sCrashV7.zip/file" class="btn"><i class="fas fa-file-code"></i>WHATSAPP CRASH FILES</a>
+    <a href="https://drive.google.com/file/d/1CJo3mj4NgorVmive9-EErAroH_0I4LBN/view?usp=drivesdk" class="btn"><i class="fas fa-film"></i>CAPCUT PRO FREE</a>
+    <a class='btn' href='/xtiktokcourse'><i class="fas fa-image"></i> FREE ONLINE EARNING COURSE</a>
+  </div>
+  
+  <div class="footer">
+    &copy; 2025 - POWERED BY YARAM-MODS 
+  </div>
+</div>
+
+<div id="popup-overlay" class="popup-overlay">
+  <div class="popup-modal">
+    <h2>Join Our Channel!</h2>
+    <p>Get free hacking tricks and updates by joining our WhatsApp Channel.</p>
+    <a href="https://whatsapp.com/channel/0029VbAfHcDC1FuEJJ7N513X" target="_blank" class="btn">Join Now</a>
+    <button id="close-popup" class="btn close-btn">Close</button>
+  </div>
+</div>
+
+<a href="https://whatsapp.com/channel/0029VbAfHcDC1FuEJJ7N513X" target="_blank" class="floating-icon">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<script>
+  const canvas = document.getElementById("bg");
+  const ctx = canvas.getContext("2d");
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  const matrix = "01";
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+  const drops = Array.from({ length: columns }).fill(1);
+
+  function draw() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.07)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#00ffe7";
+    ctx.font = `${fontSize}px monospace`;
+    for (let i = 0; i < drops.length; i++) {
+      const text = matrix[Math.floor(Math.random() * matrix.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+  setInterval(draw, 35);
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+
+  const popupOverlay = document.getElementById('popup-overlay');
+  const closePopupButton = document.getElementById('close-popup');
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      popupOverlay.style.display = 'flex';
+    }, 2000);
+  });
+  closePopupButton.addEventListener('click', () => {
+    popupOverlay.style.display = 'none';
+  });
+  popupOverlay.addEventListener('click', (event) => {
+    if (event.target === popupOverlay) {
+        popupOverlay.style.display = 'none';
+    }
+  });
+
+  // Create floating particles
+  function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const numberOfParticles = 30;
+    
+    for (let i = 0; i < numberOfParticles; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      
+      // Random properties
+      const size = Math.random() * 5 + 2;
+      const posX = Math.random() * 100;
+      const posY = Math.random() * 100;
+      const delay = Math.random() * 10;
+      const duration = Math.random() * 20 + 10;
+      
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${posX}vw`;
+      particle.style.top = `${posY}vh`;
+      particle.style.animation = `
+        floatParticle ${duration}s ease-in-out ${delay}s infinite,
+        glowParticle 4s ease-in-out ${delay}s infinite alternate
+      `;
+      
+      particlesContainer.appendChild(particle);
+    }
+    
+    // Add keyframes dynamically
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes floatParticle {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px) rotate(90deg); }
+        50% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(180deg); }
+        75% { transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px) rotate(270deg); }
+        100% { transform: translate(0, 0) rotate(360deg); }
+      }
+      
+      @keyframes glowParticle {
+        0% { opacity: 0.2; box-shadow: 0 0 5px #00ffe7; }
+        100% { opacity: 0.8; box-shadow: 0 0 15px #00ffe7, 0 0 25px #00ffe7; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  // Initialize particles when page loads
+  window.addEventListener('load', createParticles);
+</script>
+
+</body>
+</html>
